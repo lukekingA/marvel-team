@@ -10,6 +10,15 @@ let _characters = 'characters?limit=100'
 let _offset = 0
 let _apiKey = 0
 
+let _sandbox = axios.create({
+  baseURL: 'https://bcw-sandbox.herokuapp.com/api/LukeA/heros'
+})
+
+
+//var schema = new Schema({
+
+//})
+
 let _state = {
   apiHeros: [],
   myTeam: []
@@ -41,8 +50,24 @@ export default class MarvelService {
     return _state.MyTeam.map(hero => new(Hero(hero)))
   }
 
+  addToTeam(id) {
+
+  }
+
+  getMyTeamData() {
+    _sandbox.get().then(res => {
+      let data = res.data.data.map(d => new Hero(d))
+      setState('myTeam', data)
+    }).catch(err => console.log(err))
+  }
+
+  getMarvelTeam() {
+
+  }
+
+
   getMarvelData() {
-    _marvelAPI.get(`${_characters}&offset=${_offset}&apiKey=${_apiKey}`).then(response => {
+    _marvelAPI.get(`${_characters}&offset=${_offset}&apikey=${_apiKey}`).then(response => {
       let data = response.data.data.results.map(d => new Hero(d))
       setState('apiHeros', data)
     }).catch(err => console.log(err))
